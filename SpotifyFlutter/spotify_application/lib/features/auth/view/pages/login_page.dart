@@ -3,22 +3,20 @@ import 'package:spotify_application/core/theme/app_pallete.dart';
 import 'package:spotify_application/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:spotify_application/features/auth/view/widgets/custom_field.dart';
 
-class SingupPage extends StatefulWidget {
-  const SingupPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<SingupPage> createState() => _SingupPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SingupPageState extends State<SingupPage> {
-  final TextEditingController nameController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -37,28 +35,26 @@ class _SingupPageState extends State<SingupPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Sign Up.',
+                  'Sign In.',
                   style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 30),
-                CustomField(hintText: 'name', controller: nameController),
                 const SizedBox(height: 20),
                 CustomField(hintText: 'email', controller: emailController),
                 const SizedBox(height: 20),
                 CustomField(hintText: 'password', controller: passwordController, obscureText: true),
                 const SizedBox(height: 20),
                 AuthGradientButton(
-                  buttonText: 'Sign Up',
+                  buttonText: 'Sign In',
                   onTap: () {},
                 ),
                 const SizedBox(height: 20),
                 RichText(
                   text: TextSpan(
-                    text: 'Already have an account? ',
+                    text: 'Don\'t have an account? ',
                     style: Theme.of(context).textTheme.titleMedium,
                     children: [
                       TextSpan(
-                        text: 'Sing In',
+                        text: 'Sign Up',
                         style: TextStyle(
                           color: Pallete.gradient2,
                           fontWeight: FontWeight.bold,
