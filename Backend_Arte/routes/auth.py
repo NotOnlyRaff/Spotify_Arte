@@ -28,6 +28,8 @@ def signup_user(user: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(user_db)
 
+    return user_db
+
 
     
 @router.post('/login', status_code=200)

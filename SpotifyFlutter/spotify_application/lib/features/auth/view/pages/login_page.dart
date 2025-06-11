@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_application/core/theme/app_pallete.dart';
+import 'package:spotify_application/features/auth/repositories/auth_remote_repository.dart';
+import 'package:spotify_application/features/auth/view/pages/singup_page.dart';
 import 'package:spotify_application/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:spotify_application/features/auth/view/widgets/custom_field.dart';
 
@@ -45,22 +47,40 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 AuthGradientButton(
                   buttonText: 'Sign In',
-                  onTap: () {},
+                  onTap: () {
+                    AuthRemoteRepository().login(
+                      email: emailController.text,
+                      password: passwordController.text,
+                    ).then((value) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Login Successful')),
+                      );
+                    }).catchError((error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error: $error')),
+                      );
+                    });
+                  },
                 ),
                 const SizedBox(height: 20),
-                RichText(
-                  text: TextSpan(
-                    text: 'Don\'t have an account? ',
-                    style: Theme.of(context).textTheme.titleMedium,
-                    children: [
-                      TextSpan(
-                        text: 'Sign Up',
-                        style: TextStyle(
-                          color: Pallete.gradient2,
-                          fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SingupPage()));
+                  },
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Don\'t have an account? ',
+                      style: Theme.of(context).textTheme.titleMedium,
+                      children: [
+                        TextSpan(
+                          text: 'Sign Up',
+                          style: TextStyle(
+                            color: Pallete.gradient2,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
