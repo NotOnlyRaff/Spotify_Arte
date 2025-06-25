@@ -19,7 +19,6 @@ class AuthGradientButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: onTap,
-        child: Text(buttonText, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
           fixedSize: const Size(395, 55),
@@ -29,6 +28,7 @@ class AuthGradientButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
+        child: Text(buttonText, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
       ),
     );
   }

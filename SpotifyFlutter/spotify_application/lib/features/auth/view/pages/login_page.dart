@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:spotify_application/core/theme/app_pallete.dart';
 import 'package:spotify_application/features/auth/repositories/auth_remote_repository.dart';
 import 'package:spotify_application/features/auth/view/pages/singup_page.dart';
@@ -47,19 +48,17 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 AuthGradientButton(
                   buttonText: 'Sign In',
-                  onTap: () {
-                    AuthRemoteRepository().login(
+                  onTap: () async {
+                    final res = await AuthRemoteRepository().login(
                       email: emailController.text,
                       password: passwordController.text,
-                    ).then((value) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Login Successful')),
-                      );
-                    }).catchError((error) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error: $error')),
-                      );
-                    });
+                    );
+                    final val = switch (res) {
+                      Left(value: final l) => l,
+                      Right(value: final r) => r.name,
+                      _ => null, // Handles any other type
+                    };
+                    print(val);
                   },
                 ),
                 const SizedBox(height: 20),

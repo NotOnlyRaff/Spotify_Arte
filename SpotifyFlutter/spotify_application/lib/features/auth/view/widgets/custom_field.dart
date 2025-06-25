@@ -16,6 +16,7 @@ class CustomField extends StatelessWidget {
         if( value!.trim().isEmpty){
           return '$hintText is required!';
         }
+        return null;
       },
     );
   }

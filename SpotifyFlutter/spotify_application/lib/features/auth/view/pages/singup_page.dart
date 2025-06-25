@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:spotify_application/core/theme/app_pallete.dart';
 import 'package:spotify_application/features/auth/repositories/auth_remote_repository.dart';
 import 'package:spotify_application/features/auth/view/pages/login_page.dart' show LoginPage;
@@ -52,20 +53,17 @@ class _SingupPageState extends State<SingupPage> {
                 AuthGradientButton(
                   buttonText: 'Sign Up',
                   onTap: () async {
-                    await AuthRemoteRepository().signup(
+                    final res = await AuthRemoteRepository().signup(
                       name: nameController.text,
                       email: emailController.text,
                       password: passwordController.text,
-                    ) .then((value) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Account created successfully!')),
-                      );
-                      Navigator.pushReplacementNamed(context, '/login');
-                    }).catchError((error) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error: $error')),
-                      );
-                    });
+                    );
+                    final val = switch (res) {
+                      Left(value: final l) => l,
+                      Right(value: final r) => r.name,
+                      _ => null, // Handles any other type
+                    };
+                    print(val);
                   },
                 ),
                 const SizedBox(height: 20),
