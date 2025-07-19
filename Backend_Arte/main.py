@@ -5,6 +5,7 @@ from routes import auth
 from fastapi.middleware.cors import CORSMiddleware
 
 
+
 app = FastAPI()
 origins = ["*"]
 

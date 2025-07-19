@@ -1,19 +1,61 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:spotify_application/features/auth/model/user_model.dart';
+import 'package:spotify_application/features/auth/repositories/auth_remote_repository.dart';
 
-class Notifier extends StateNotifier<void> {
-  Notifier() : super(null);
+part 'auth_viewmodel.g.dart';
 
-  void build() {
-    // This method can be overridden by subclasses to implement specific build logic.
-  }
-}
+@riverpod
+class AuthViewModel extends _$AuthViewModel {
+  final AuthRemoteRepository _authRemoteRepository = AuthRemoteRepository();
 
-
-
-class AuthViewmodel extends Notifier{
   @override
-  build() {
-  
-    throw UnimplementedError();
+  AsyncValue<UserModel> build() {
+    return const AsyncValue.loading();
+  }
+
+  Future<void> signUpUser({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    state = const AsyncValue.loading();
+    final res = await _authRemoteRepository.signup(
+      name: name,
+      email: email,
+      password: password,
+    );
+    final val = switch (res) {
+      Left(value: final l) => state = AsyncValue.error(
+        l.message,
+        StackTrace.current,
+      ), //Error case
+
+      Right(value: final r) => state = AsyncValue.data(r), //Success case
+      _ => null, // Handles any other type
+    };
+    print(val);
+  }
+
+  Future<void> loginUser({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    state = const AsyncValue.loading();
+    final res = await _authRemoteRepository.login(
+      email: email,
+      password: password,
+    );
+    final val = switch (res) {
+      Left(value: final l) => state = AsyncValue.error(
+        l.message,
+        StackTrace.current,
+      ), //Error case
+
+      Right(value: final r) => state = AsyncValue.data(r), //Success case
+      _ => null, // Handles any other type
+    };
+    print(val);
   }
 }
