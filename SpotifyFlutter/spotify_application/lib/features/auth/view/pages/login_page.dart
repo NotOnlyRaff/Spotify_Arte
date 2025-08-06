@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spotify_application/core/theme/app_pallete.dart';
-import 'package:spotify_application/features/auth/repositories/auth_remote_repository.dart';
 import 'package:spotify_application/features/auth/view/pages/singup_page.dart';
 import 'package:spotify_application/features/auth/view/widgets/auth_gradient_button.dart';
 import 'package:spotify_application/features/auth/view/widgets/custom_field.dart';
+import 'package:spotify_application/features/auth/viewmodel/auth_viewmodel.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -27,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -38,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Sign In.',
+                  'Sign In',
                   style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
@@ -49,17 +51,16 @@ class _LoginPageState extends State<LoginPage> {
                 AuthGradientButton(
                   buttonText: 'Sign In',
                   onTap: () async {
-                    final res = await AuthRemoteRepository().login(
-                      email: emailController.text,
-                      password: passwordController.text,
-                    );
-                    final val = switch (res) {
-                      Left(value: final l) => l,
-                      Right(value: final r) => r.name,
-                      _ => null, // Handles any other type
-                    };
-                    print(val);
-                  },
+                        if (formKey.currentState!.validate()) {
+                          await ref.read(authViewModelProvider.notifier)
+                              .loginUser(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              );
+                        } else {
+                          showSnackBar(context, 'Missing fields!');
+                        }
+                      },
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(

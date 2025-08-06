@@ -1,7 +1,9 @@
 import uuid
 from fastapi import Depends, HTTPException
 import bcrypt
+from fastapi.params import Header
 import jwt
+from middleware.auth_middleware import auth_middleware
 from models.user import User
 from schemas.user_create import UserCreate
 from fastapi import APIRouter
@@ -47,6 +49,17 @@ def login_user(user: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(400, 'Incorrect password!')
     
 
-    ##token = jwt.encode({'id': user_db.id}, 'password_key')
+    token = jwt.encode({'id': user_db.id}, 'password_key')
     
-    return {'user': user_db}
+    return {'token': token, 'user': user_db}
+
+@router.get('/')
+def current_user_data(db: Session = Depends(get_db),
+                      user_dict = Depends(auth_middleware)): 
+
+    user = db.query(User).filter(User.id == user_dict['uid']).first()
+
+    if not user:
+        raise HTTPException(404, 'User not found!')
+    
+    return user
