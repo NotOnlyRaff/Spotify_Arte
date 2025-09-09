@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+<<<<<<< HEAD
 import 'package:spotify_application/core/theme/app_pallete.dart';
 import 'package:spotify_application/core/widgets/loader.dart';
+=======
+import 'package:fpdart/fpdart.dart';
+import 'package:spotify_application/core/theme/app_pallete.dart';
+import 'package:spotify_application/core/widgets/loader.dart';
+import 'package:spotify_application/features/auth/repositories/auth_remote_repository.dart';
+>>>>>>> 9fd35c0c4a2b4deb3ae87a1856808fa7d748a5cf
 import 'package:spotify_application/features/auth/view/pages/login_page.dart'
     show LoginPage;
 import 'package:spotify_application/features/auth/view/widgets/auth_gradient_button.dart';
@@ -32,7 +39,11 @@ class _SingupPageState extends ConsumerState<SingupPage> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     final isLoading = ref.watch(authViewModelProvider.select((value) => value?.isLoading == true));
+=======
+    final isLoading = ref.watch(authViewModelProvider)?.isLoading == true;
+>>>>>>> 9fd35c0c4a2b4deb3ae87a1856808fa7d748a5cf
 
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
@@ -40,7 +51,11 @@ class _SingupPageState extends ConsumerState<SingupPage> {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
+<<<<<<< HEAD
             const SnackBar(content: Text("Account created successfully!")),
+=======
+              const SnackBar(content: Text('Account created successfully!')),
+>>>>>>> 9fd35c0c4a2b4deb3ae87a1856808fa7d748a5cf
             );
           Navigator.push(
             context,
@@ -50,9 +65,13 @@ class _SingupPageState extends ConsumerState<SingupPage> {
         error: (error, st) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
+<<<<<<< HEAD
             ..showSnackBar(
               SnackBar(content: Text(error.toString())),
             );
+=======
+            ..showSnackBar(SnackBar(content: Text(error.toString())));
+>>>>>>> 9fd35c0c4a2b4deb3ae87a1856808fa7d748a5cf
         },
         loading: () {
           return const Loader();
@@ -62,7 +81,13 @@ class _SingupPageState extends ConsumerState<SingupPage> {
 
     return Scaffold(
       appBar: AppBar(),
+<<<<<<< HEAD
       body: Padding(
+=======
+      body: isLoading
+          ? const Loader()
+          : Padding(
+>>>>>>> 9fd35c0c4a2b4deb3ae87a1856808fa7d748a5cf
               padding: const EdgeInsets.all(15.0),
               child: Form(
                 key: formKey,
@@ -70,7 +95,11 @@ class _SingupPageState extends ConsumerState<SingupPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
+<<<<<<< HEAD
                       'Sign Up',
+=======
+                      'Sign Up.',
+>>>>>>> 9fd35c0c4a2b4deb3ae87a1856808fa7d748a5cf
                       style: TextStyle(
                         fontSize: 50,
                         fontWeight: FontWeight.bold,
@@ -90,6 +119,7 @@ class _SingupPageState extends ConsumerState<SingupPage> {
                     AuthGradientButton(
                       buttonText: 'Sign Up',
                       onTap: () async {
+<<<<<<< HEAD
                         await ref
                             .read(authViewModelProvider.notifier)
                             .signUpUser(
@@ -97,6 +127,27 @@ class _SingupPageState extends ConsumerState<SingupPage> {
                               email: emailController.text,
                               password: passwordController.text,
                             );
+=======
+                        if (formKey.currentState!.validate()) {
+                          // If the form is valid, proceed with sign up
+                          ref
+                              .read(authViewModelProvider.notifier)
+                              .signUpUser(
+                                name: nameController.text.trim(),
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim(),
+                              );
+                        } else {
+                          // If the form is not valid, show a message or handle accordingly
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Please fill in all fields correctly.',
+                              ),
+                            ),
+                          );
+                        }
+>>>>>>> 9fd35c0c4a2b4deb3ae87a1856808fa7d748a5cf
                       },
                     ),
                     const SizedBox(height: 20),
